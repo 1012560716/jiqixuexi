@@ -29,24 +29,25 @@ def update():
     # 权值调整
     global X,Y,W,V,lr
     L1 = sigmoid(np.dot(X,V))   #隐藏层输出（4,4）
-    L2 = sigmoid(np.dot(L1,W))   #隐藏层输出（4,1）
-
+    L2 = sigmoid(np.dot(L1,W))   #输出层输出（4,1）
+    #print("L1=",L1)
+    #print("L2=", L2)
     L2_delta = (Y.T - L2)*dsigmoid(L2)
     L1_delta = L2_delta.dot(W.T)*dsigmoid(L1)
-
-    W_C = lr * L1.T.dot(L2_delta)
-    V_C = lr * X.T.dot(L1_delta)
+    print("L2_delta=", L2_delta)
+    #print("L1_delta=", L1_delta)
+    #print("-"*30)
+    W_C = lr * L1.dot(L2_delta)
+    V_C = lr * X.T.dot(L1_delta)    # X 为 四行三列 L1_delta 为 四行四列，所以 X 需要转置才能相乘
 
     W = W + W_C
     V = V +V_C
-    print(W)
-    print(V)
-for i in range(20000):
+for i in range(200000):
     update() # 更新权值
     if i%500==0:
         L1 = sigmoid(np.dot(X,V))   # 隐藏层输出（4,4）
         L2 = sigmoid(np.dot(L1,W))  # 输出层输出（4,1）
-        print("误差：",np.mean(np.abs(Y.T-L2)))
+        #print("误差：",np.mean(np.abs(Y.T-L2)))
 L1 = sigmoid(np.dot(X,V))   # 隐藏层输出（4,4）
 L2 = sigmoid(np.dot(L1,W))  # 输出层输出（4,1）
 print(L2)
